@@ -14,7 +14,7 @@ and it should have an endpoint for returning the latest position of all the inve
 
 Further Tasks
 
-- Have the backend send a push notification to investigators who are close to each other
+- Have the backend send a push notification to investigators who are close to each other [some progress made on push_notifications branch]
 - Be able to see the paths of of canvassing investigators to prevent investigator overlap
 - Allow investigators to enter their projected path so they can get directions and let
 other investigators know of their plans
