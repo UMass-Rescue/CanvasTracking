@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, Dimensions } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import * as Permissions from "expo-permissions";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Map from "./Map"
 
 
 const BACKEND_SERVER = "http://localhost:8000/"
@@ -71,7 +72,7 @@ export default function App() {
       <Button
         title="Start Tracking"
         onPress={() => {
-          axios.post(BACKEND_SERVER + "register", {
+          axios.post(BACKEND_SERVER + "register/", {
             name: text,
           });
           AsyncStorage.setItem('canvas_tracking_name', text);
@@ -88,6 +89,12 @@ export default function App() {
           setStartedTracking(false);
         }}
       />
+      {
+        startedTracking ?
+          <Map />
+          :
+          null
+      }
     </View>
   );
 }
@@ -113,17 +120,15 @@ TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
     let long = locations[0].coords.longitude;
     let name = await AsyncStorage.getItem('canvas_tracking_name');
 
-    // HERE is where we will put our server communication logic
-
     if (name) {
-      axios.post(BACKEND_SERVER + "location", {
+      axios.post(BACKEND_SERVER + "location/", {
         name: name,
         latitude: lat,
         longitude: long,
       });
-      console.log(
-        `${new Date(Date.now()).toLocaleString()}: ${lat},${long},${name}`
-      );
+      // console.log(
+      //   `${new Date(Date.now()).toLocaleString()}: ${lat},${long},${name}`
+      // );
     }
     
   }

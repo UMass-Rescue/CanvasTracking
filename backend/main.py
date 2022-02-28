@@ -1,9 +1,10 @@
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, WebSocket
 
 import crud
 import models
 import schemas
 from database import SessionLocal, engine
+import asyncio
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -33,10 +34,17 @@ def insert_location(body: schemas.GPSEntry, session=Depends(get_db)):
     return schemas.StatusMessage(status="failure", message="user does not exist")
 
 
-@app.get("/investigator_locations/", response_model=schemas.CurrentLocations)
-def get_current_investigator_locations(session=Depends(get_db)):
-    crud.get_current_locations(session)
-    return schemas.CurrentLocations(entries=[])
+@app.websocket("/investigator_locations/")
+async def get_current_investigator_locations(
+    websocket: WebSocket, session=Depends(get_db)
+):
+    await websocket.accept()
+    while True:
+        await asyncio.sleep(1)
+        current_locations = crud.get_current_locations(session)
+        await websocket.send_text(
+            schemas.CurrentLocations(entries=current_locations).json()
+        )
 
 
 if __name__ == "__main__":
