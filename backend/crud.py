@@ -3,7 +3,7 @@ import schemas
 
 
 def create_user(db, user):
-    user = db.query(models.User).filter(models.User.name == location.name).first()
+    user = db.query(models.User).filter(models.User.name == user.name).first()
     if user is not None:
         return False
     db.add(models.User(name=user.name))
@@ -27,7 +27,7 @@ def create_location(db, location):
 
 
 def get_current_locations(db):
-    users = db.query(models.User).filter(models.User.name == location.name).all()
+    users = db.query(models.User).filter(models.User.active).all()
     latest_locations = []
     for user in users:
         latest_location = (

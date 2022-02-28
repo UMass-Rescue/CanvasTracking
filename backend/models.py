@@ -1,14 +1,16 @@
-import datetime
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String
+from sqlalchemy.sql import func
 
 from database import Base
-from sqlalchemy import Boolean, Column, DateTime, Integer, String, Float
-from sqlalchemy.sql import func
 
 
 class User(Base):
+    __tablename__ = "user"
+
     id = Column(Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=func.now())
     name = Column(String(50), unique=True, index=True)
+    active = Column(Boolean, default=True)
 
 
 class Location(Base):

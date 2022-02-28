@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: opskit-monorepo
+build:
+  artifacts:
+    - image: canvas-tracker-backend-local
+      context: backend
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - deploy/namespace.yaml
+      - deploy/configMap.yaml
+      - deploy/canvasTrackerBackend.yaml

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: can-config
+  namespace: can
+data:
+  NET_DB_PASS: ""
+  NET_DB_HOST: ""
+  NET_DB_PORT: ""
+  NET_DB_USER: ""
+  NET_DB_NAME: ""

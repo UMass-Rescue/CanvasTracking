@@ -9,6 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+__pycache__/
+gps.db*
 
 # macOS
 .DS_Store
