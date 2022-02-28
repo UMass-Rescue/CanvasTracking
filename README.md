@@ -6,6 +6,7 @@ Goals:
 user to a backend server
 - The app should be able to relay position continiously (unsure if it will be able to
 run in the background)
+    - may have to use sticky notifications
 - The backend should store the position data from all the investigators canvassing,
 and it should have an endpoint for returning the latest position of all the investigators (possibly a websocket)
 - The mobile app should have a map to render the positions of the investigators

@@ -3,8 +3,8 @@ import schemas
 
 
 def create_user(db, user):
-    user = db.query(models.User).filter(models.User.name == user.name).first()
-    if user is not None:
+    user_in_db = db.query(models.User).filter(models.User.name == user.name).first()
+    if user_in_db is not None:
         return False
     db.add(models.User(name=user.name))
     db.commit()

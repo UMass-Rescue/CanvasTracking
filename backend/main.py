@@ -34,7 +34,7 @@ def insert_location(body: schemas.GPSEntry, session=Depends(get_db)):
 
 
 @app.get("/investigator_locations/", response_model=schemas.CurrentLocations)
-def get_current(session=Depends(get_db)):
+def get_current_investigator_locations(session=Depends(get_db)):
     crud.get_current_locations(session)
     return schemas.CurrentLocations(entries=[])
 
