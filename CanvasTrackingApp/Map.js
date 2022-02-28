@@ -7,11 +7,44 @@ const BACKEND_SERVER = "localhost:8000"
 
 
 var randomColor = Math.floor(Math.random()*16777215).toString(16);
+function getMiddle(prop, markers) {
+    let values = markers.map(m => m[prop]);
+    let min = Math.min(...values);
+    let max = Math.max(...values);
+    if (prop === 'longitude' && (max - min > 180)) {
+      values = values.map(val => val < max - 180 ? val + 360 : val);
+      min = Math.min(...values);
+      max = Math.max(...values);
+    }
+    let range = max - min;
+    let result = (min + max) / 2;
+    if (prop === 'longitude' && result > 180) {
+      result -= 360
+    }
+    return [result, range];
+  }
+  
+  function findCenter(markers) {
+    let [latitude, latitudeRange] = getMiddle('latitude', markers);
+    let [longitude, longitudeRange] = getMiddle('longitude', markers);
+    return {
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: latitudeRange || 0.01,
+      longitudeDelta: longitudeRange || 0.01,
+    }
+  }
 
 export default function Map(props) {   
     
     
     const [points, setPoints] = React.useState([]);
+    const [region, setRegion] = React.useState({
+        "latitude": 0,
+        "latitudeDelta": .01,
+        "longitude": 0,
+        "longitudeDelta": .01,
+      });
 
     var colors = {}
 
@@ -21,12 +54,15 @@ export default function Map(props) {
             // a message was received
             const data = JSON.parse(e.data).entries
             setPoints(data);
+            
             for (const point in data) {
                 if (data[point].name in colors) {} 
                 else {
                     colors[data[point].name] = randomColor;
                 }
               }
+
+              setRegion(findCenter(data))
           };
     }, [])
 
@@ -34,7 +70,7 @@ export default function Map(props) {
 
     return (
         <>
-            <MapView style={styles.map}>
+            <MapView region={region} style={styles.map}>
             {
                 points.map((point, index)=>{
                     return <Marker 
