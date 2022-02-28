@@ -1,11 +1,40 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+import models
+import crud
+from database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@app.post("/register/", response_model=schemas.StatusMessage)
+def insert_user(body: schemas.User, session: Session = Depends(get_db)):
+    if crud.create_user(session, body):
+        return schemas.StatusMessage(status="success", message="user created")
+    return schemas.StatusMessage(status="failure", message="user already exists")
+
+
+@app.post("/location/", response_model=schemas.StatusMessage)
+def insert_location(body: schemas.GPSEntry, session: Session = Depends(get_db)):
+    if crud.create_location(session, body):
+        return schemas.StatusMessage(status="success", message="location created")
+    return schemas.StatusMessage(status="failure", message="user does not exist")
+
+
+@app.get("/investigator_locations/", response_model=schemas.CurrentLocations)
+def get_current(session: Session = Depends(get_db)):
+    crud.get_current_locations(session)
+    return schemas.CurrentLocations(entries=[])
 
 
 if __name__ == "__main__":
