@@ -35,7 +35,8 @@
     },
     "plugins": [
       "expo-location",
-      "expo-task-manager"
+      "expo-task-manager",
+      "expo-notifications"
     ]
   }
 }

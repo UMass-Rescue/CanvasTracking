@@ -5,6 +5,7 @@ import models
 import schemas
 from database import SessionLocal, engine
 import asyncio
+import push_handler
 
 models.Base.metadata.create_all(bind=engine)
 

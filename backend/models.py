@@ -10,6 +10,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=func.now())
     name = Column(String(50), unique=True, index=True)
+    push_token = Column(String, unique=True, index=True)
     active = Column(Boolean, default=True)
 
 

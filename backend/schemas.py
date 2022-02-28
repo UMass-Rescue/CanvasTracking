@@ -18,6 +18,7 @@ class GPSEntry(BaseModel):
 
 class User(BaseModel):
     name: str
+    push_token: str
 
 
 class CurrentLocations(BaseModel):

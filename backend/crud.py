@@ -6,7 +6,7 @@ def create_user(db, user):
     user_in_db = db.query(models.User).filter(models.User.name == user.name).first()
     if user_in_db is not None:
         return False
-    db.add(models.User(name=user.name))
+    db.add(models.User(name=user.name, push_token=user.push_token))
     db.commit()
     return True
 

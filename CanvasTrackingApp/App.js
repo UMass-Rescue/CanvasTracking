@@ -6,6 +6,8 @@ import * as Permissions from "expo-permissions";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Map from "./Map"
+import * as Notifications from 'expo-notifications';
+
 
 
 const BACKEND_SERVER = "http://localhost:8000/"
@@ -31,6 +33,22 @@ export default function App() {
     return await Location.hasStartedLocationUpdatesAsync(
       LOCATION_TRACKING
     );
+  }
+  async function registerForPushNotificationsAsync(userId) {
+    const expoPushToken = await Notifications.getExpoPushTokenAsync({
+      experienceId: '@username/example',
+    });
+  
+    await fetch('https://example.com/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+        expoPushToken,
+      }),
+    });
   }
 
   React.useEffect(() => {
@@ -71,9 +89,13 @@ export default function App() {
       />
       <Button
         title="Start Tracking"
-        onPress={() => {
+        onPress={async () => {
+          const expoPushToken = await Notifications.getExpoPushTokenAsync({
+            experienceId: text,
+          });
           axios.post(BACKEND_SERVER + "register/", {
             name: text,
+            push_token: expoPushToken
           });
           AsyncStorage.setItem('canvas_tracking_name', text);
           startLocationTracking();
