@@ -2,14 +2,13 @@
 
 Goals:
 
-[x] Build a cross platform mobile application that relays the latest GPS position of the app
+- [x] Build a cross platform mobile application that relays the latest GPS position of the app
 user to a backend server
-[x] The app should be able to relay position continiously (unsure if it will be able to
+- [x] The app should be able to relay position continiously (unsure if it will be able to
 run in the background)
-    - may have to use sticky notifications
-[x] The backend should store the position data from all the investigators canvassing,
+- [x] The backend should store the position data from all the investigators canvassing,
 and it should have an endpoint for returning the latest position of all the investigators (possibly a websocket)
-[x] The mobile app should have a map to render the positions of the investigators
+- [x] The mobile app should have a map to render the positions of the investigators
 
 
 Further Tasks
